@@ -1,0 +1,31 @@
+.header-common {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  height: 80px;
+  position: relative;
+  font-size: 16px;
+  padding: 5px 20px;
+  border-bottom: 1px solid #ccc;
+
+  .el-menu {
+    display: flex;
+    justify-content: flex-end;
+    border: none;
+    height: 100%;
+    width: 100%;
+  }
+
+  .logo {
+    width: auto;
+    height: 80px;
+  }
+
+  .avatar {
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: rgb(235, 235, 235) 0px 0px 0px 2px;
+  }
+}
