@@ -51,6 +51,8 @@ export default class DB {
    */
   updateItem(storeName: string, data: any) {
     // transition 事务，数据库的增删改查都需要通过事务来操作
+    console.log(this.db.transaction);
+    
     const store = this.db.transaction([storeName], 'readwrite').objectStore(storeName)
     const request = store.put({ ...data, updateTime: new Date().getTime() })
     return new Promise((resolve, reject) => {

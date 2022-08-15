@@ -31,7 +31,7 @@
 import { ref } from "vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
-
+import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
 const activeIndex = ref("orders");
 
 const emites = defineEmits<{
@@ -41,10 +41,42 @@ const emites = defineEmits<{
 const handleSelect = (select: string) => {
   if (select === "zh") {
     emites("change-lang", zhCn);
+    saveLanguage("zh");
   } else {
     emites("change-lang", en);
+    saveLanguage("en");
   }
 };
+
+/**
+ * @description 保存语言包
+ */
+const saveLanguage = (lang: any) => {
+  saveLanguageApi(lang).then((res) => {
+    let { success } = res;
+    if (success) {
+      console.log("保存成功");
+    }
+  });
+};
+
+const fetchLanguage = () => {
+  fetchLanguageApi().then((res) => {
+    let { success, result } = res;
+    let { name } = result;
+    if (success) {
+      if (name === "zh") {
+        emites("change-lang", zhCn);
+      } else {
+        emites("change-lang", en);
+      }
+
+      console.log("当前语言包获取成功");
+    }
+  });
+};
+
+fetchLanguage();
 </script>
 
 <style lang="scss" scoped>

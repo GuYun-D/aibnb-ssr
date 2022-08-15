@@ -1,5 +1,7 @@
 import IndexedDB from '../../utils/indexedDB'
 const aribnb = new IndexedDB('aribnb')
+import { ElLoading } from "element-plus";
+
 
 interface IResultOr {
   code: string
@@ -14,8 +16,13 @@ interface IResultOr {
  * @returns 
  */
 export async function saveLanguageApi(lang: any) {
-  await aribnb.openStore('langiage', 'id', ['name'])
-  const resultOr: IResultOr = await aribnb.getItem('language', 1).then(res => {
+  await aribnb.openStore('language', 'id', ['name'])
+  const loading = ElLoading.service({
+    lock: true,
+    text: "Loading",
+    background: "rgba(0, 0, 0, 0.1)",
+  });
+  const resultOr: IResultOr = await aribnb.updateItem('language', 1).then(res => {
     return { code: '000000', message: '操作成功', result: res || null, success: true }
   })
 
@@ -28,6 +35,7 @@ export async function saveLanguageApi(lang: any) {
   }
 
   const result: IResultOr = await aribnb.updateItem('language', obj).then(res => {
+    loading.close()
     return {
       code: '000000',
       message: '操做成功',
@@ -45,6 +53,11 @@ export async function saveLanguageApi(lang: any) {
  */
 export async function fetchLanguageApi() {
   await aribnb.openStore('language', 'id', ['name'])
+  const loading = ElLoading.service({
+    lock: true,
+    text: "Loading",
+    background: "rgba(0, 0, 0, 0.1)",
+  });
   const result: IResultOr = await aribnb.getItem('language', 1).then(res => {
     return {
       code: '000000',
@@ -53,6 +66,8 @@ export async function fetchLanguageApi() {
       success: true
     }
   })
+  
+  loading.close()
 
   return result
 }
