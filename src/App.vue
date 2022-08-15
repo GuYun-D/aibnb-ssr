@@ -12,6 +12,8 @@
       <button @click="changeLanguage(zhCn)">中文</button>
       <button @click="changeLanguage(en)">英文</button>
     </div> -->
+
+    <FooterCommon></FooterCommon>
   </el-config-provider>
 </template>
 
@@ -22,6 +24,7 @@ import en from "element-plus/lib/locale/lang/en";
 import { useI18n } from "vue-i18n";
 import { ref } from "@vue/reactivity";
 import HeaderCommon from "./layout/header-common.vue";
+import FooterCommon from "./layout/footer-common.vue";
 
 const { locale: localeLanguage } = useI18n();
 const router = useRouter();

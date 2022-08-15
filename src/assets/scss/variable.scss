@@ -5,3 +5,15 @@ $red: red;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@mixin main-wrapper {
+  width: 1080px;
+  margin: 0 auto;
+}
+
+@mixin flex-layout($dir: column, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+}
