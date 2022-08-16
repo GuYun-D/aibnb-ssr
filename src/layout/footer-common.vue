@@ -1,24 +1,29 @@
 <template>
-  <div class="footer-common">
-    <ul>
-      <li v-for="item in footerMenu" :key="item.name">
-        <h4>{{ item.title }}</h4>
-        <a
-          target="_blank"
-          :href="links.link"
-          v-for="links in item.menus"
-          :key="links.name"
-        >
-          {{ links.name }}
-        </a>
-      </li>
-    </ul>
-    <div class="copy-right">@ 2022 Harry, Inc, All rights reserverd</div>
+  <div class="footer">
+    <div class="footer-common">
+      <ul>
+        <li v-for="item in footerMenu" :key="item.name">
+          <h4>{{ t(`footer['${item.title}']`) }}</h4>
+          <a
+            target="_blank"
+            :href="links.link"
+            v-for="links in item.menus"
+            :key="links.name"
+          >
+            {{ t(`footer['${links.name}']`) }}
+          </a>
+        </li>
+      </ul>
+      <div class="copy-right">@ 2022 Harry, Inc, All rights reserverd</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const footerMenu = reactive([
   {

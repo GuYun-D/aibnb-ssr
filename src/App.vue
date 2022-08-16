@@ -12,7 +12,9 @@
       <button @click="changeLanguage(zhCn)">中文</button>
       <button @click="changeLanguage(en)">英文</button>
     </div> -->
-
+    <div class="container">
+      <router-view></router-view>
+    </div>
     <FooterCommon></FooterCommon>
   </el-config-provider>
 </template>
