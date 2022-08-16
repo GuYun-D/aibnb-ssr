@@ -1,0 +1,34 @@
+.login-page {
+  @include flex-layout(row);
+  height: 100vh;
+
+  .left-part {
+    flex: 23;
+    height: 100%;
+    background: url('https://img0.baidu.com/it/u=1918656130,3543673313&fm=253&fmt=auto&app=138&f=JPEG?w=1106&h=500') no-repeat;
+    background-size: cover;
+  }
+
+  .right-part{
+    flex: 20;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .login-pane {
+    width: 300px;
+    @include flex-layout(row, center, center);
+
+    .el-tabs__nav {
+      float: initial;
+      text-align: center;
+    }
+
+    .el-tabs__item {
+      font-size: 24px;
+
+    }
+  }
+}

@@ -23,6 +23,10 @@
           alt="个人中心"
         />
       </el-menu-item>
+
+      <el-menu-item index="login">
+        t('login.loginTab') / t('login.signTab')
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -33,6 +37,7 @@ import { useI18n } from "vue-i18n";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
 import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
+import router from "../router";
 const activeIndex = ref("orders");
 
 const { t } = useI18n();
@@ -45,9 +50,11 @@ const handleSelect = (select: string) => {
   if (select === "zh") {
     emites("change-lang", zhCn);
     saveLanguage("zh");
-  } else {
+  } else if (select === "en") {
     emites("change-lang", en);
     saveLanguage("en");
+  } else if (select === "login") {
+    router.push("/login");
   }
 };
 
