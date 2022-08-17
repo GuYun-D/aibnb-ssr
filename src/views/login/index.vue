@@ -45,9 +45,11 @@
 </template>
 
 <script setup lang="ts">
-import { ta } from "element-plus/es/locale";
-import { reactive, ref } from "vue";
+import { reactive, ref, getCurrentInstance } from "vue";
+import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { IResultOr } from "../../api/interface";
+import { userSignApi, userLoginApi } from "../../api/login/index";
 
 interface IRuleForm {
   mobile: string;
@@ -56,6 +58,9 @@ interface IRuleForm {
 
 const activeName = ref<string>("login");
 const { t } = useI18n();
+const router = useRouter()
+// @ts-ignore
+const { proxy } = getCurrentInstance();
 const formRef = ref();
 const loginText = ref<string>("Log in Airbnb");
 const loginModel: IRuleForm = reactive({
@@ -85,6 +90,9 @@ const rules = reactive({
   ],
 });
 
+/**
+ * @description 切换tab
+ */
 const handleChooseClick = (tab: any) => {
   const { name, label } = tab.props;
   if (name === "login") {
@@ -94,11 +102,46 @@ const handleChooseClick = (tab: any) => {
   }
 };
 
+/**
+ * @description 提交表单
+ */
 const submitForm = () => {
   formRef.value.validate((valid: boolean) => {
     if (valid) {
-      alert("成功");
+      if (activeName.value === "sgin") {
+        userSign({ ...loginModel });
+      } else if (activeName.value === "login") {
+        router.push('/home')
+        userLogin({ ...loginModel });
+      }
     } else {
+      return false;
+    }
+  });
+};
+
+/**
+ * @description 注册
+ */
+const userSign = (params: IRuleForm) => {
+  userSignApi(params).then((res: IResultOr) => {
+    console.log(res);
+    const { success, message } = res;
+    if (success) {
+      proxy.$message.success(message);
+    } else {
+      proxy.$message.error(message);
+    }
+  });
+};
+
+const userLogin = (params: IRuleForm) => {
+  userLoginApi(params).then((res: IResultOr) => {
+    const { message, success } = res;
+    if (success) {
+      proxy.$message.success(message);
+    } else {
+      proxy.$message.error(message);
     }
   });
 };

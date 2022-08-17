@@ -25,7 +25,7 @@
       </el-menu-item>
 
       <el-menu-item index="login">
-        t('login.loginTab') / t('login.signTab')
+        {{ t("login.loginTab") }} / {{ t("login.signTab") }}
       </el-menu-item>
     </el-menu>
   </div>
@@ -86,7 +86,7 @@ const fetchLanguage = () => {
   });
 };
 
-fetchLanguage();
+// fetchLanguage();
 </script>
 
 <style lang="scss" scoped>
