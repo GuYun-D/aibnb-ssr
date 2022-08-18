@@ -1,9 +1,15 @@
-import { createStore } from 'vuex'
+import { createStore, Store, useStore as VuexUseStore } from 'vuex'
+import { InjectionKey } from 'vue'
 import { SET_LANGUAGE } from './types'
 import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
 
+export interface AllStateTypes {
+  locale: any
+}
 
-export const store = createStore({
+export const key: InjectionKey<Store<AllStateTypes>> = Symbol('store-key')
+
+export const store = createStore<AllStateTypes>({
   state: {
     locale: null
   },
@@ -29,3 +35,7 @@ export const store = createStore({
     }
   }
 })
+
+export function useStore() {
+  return VuexUseStore(key)
+}

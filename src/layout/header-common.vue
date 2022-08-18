@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance } from "vue";
 import { useI18n } from "vue-i18n";
-import { useStore } from "vuex";
+import { useStore } from "../store";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
 import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
