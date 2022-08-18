@@ -37,6 +37,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance } from "vue";
 import { useI18n } from "vue-i18n";
+import { useStore } from "vuex";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
 import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
@@ -45,6 +46,7 @@ import { IResultOr } from "../api/interface";
 import { userLogoutApi } from "../api/login";
 
 const activeIndex = ref("orders");
+const store = useStore();
 const { t } = useI18n();
 const { proxy }: any = getCurrentInstance();
 const emites = defineEmits<{

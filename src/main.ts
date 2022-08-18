@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css'
 import i18n from './language/i18n'
 
 import aribnbb from './db'
+import { store } from './store'
 
 router.beforeEach((to, from, next) => {
   aribnbb.airbnbDB.openStore({
@@ -20,6 +21,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp(App)
 app.config.globalProperties.$message = ElMessage
 app.use(router)
+app.use(store)
 app.use(ElementPlus)
 app.use(i18n)
 app.mount('#app')
