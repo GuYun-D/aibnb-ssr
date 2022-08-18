@@ -58,7 +58,7 @@ interface IRuleForm {
 
 const activeName = ref<string>("login");
 const { t } = useI18n();
-const router = useRouter()
+const router = useRouter();
 // @ts-ignore
 const { proxy } = getCurrentInstance();
 const formRef = ref();
@@ -111,7 +111,6 @@ const submitForm = () => {
       if (activeName.value === "sgin") {
         userSign({ ...loginModel });
       } else if (activeName.value === "login") {
-        router.push('/home')
         userLogin({ ...loginModel });
       }
     } else {
@@ -137,8 +136,11 @@ const userSign = (params: IRuleForm) => {
 
 const userLogin = (params: IRuleForm) => {
   userLoginApi(params).then((res: IResultOr) => {
-    const { message, success } = res;
+    const { message, success, result } = res;
+
     if (success) {
+      localStorage.setItem("userStatus", result.status);
+      router.push("/home");
       proxy.$message.success(message);
     } else {
       proxy.$message.error(message);

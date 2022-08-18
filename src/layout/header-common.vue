@@ -16,15 +16,18 @@
         <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
 
-      <el-menu-item index="avatar"
-        ><img
-          class="avatar"
-          src="../assets/images/layout/avatar.webp"
-          alt="个人中心"
-        />
-      </el-menu-item>
+      <el-sub-menu index="avatar" v-if="userStatus == '1'">
+        <template #title>
+          <img
+            class="avatar"
+            src="../assets/images/layout/avatar.webp"
+            alt="个人中心"
+        /></template>
+        <el-menu-item index="logout">退出登录</el-menu-item>
+      </el-sub-menu>
+      <!-- <el-menu-item index="avatar"> </el-menu-item> -->
 
-      <el-menu-item index="login">
+      <el-menu-item index="login" v-else>
         {{ t("login.loginTab") }} / {{ t("login.signTab") }}
       </el-menu-item>
     </el-menu>
@@ -32,16 +35,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import { useI18n } from "vue-i18n";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
 import { saveLanguageApi, fetchLanguageApi } from "../api/layout/index";
 import router from "../router";
+import { IResultOr } from "../api/interface";
+import { userLogoutApi } from "../api/login";
+
 const activeIndex = ref("orders");
-
 const { t } = useI18n();
-
+const { proxy }: any = getCurrentInstance();
 const emites = defineEmits<{
   (e: "change-lang", lang: any): void;
 }>();
@@ -55,6 +60,8 @@ const handleSelect = (select: string) => {
     saveLanguage("en");
   } else if (select === "login") {
     router.push("/login");
+  } else if (select === "logout") {
+    userLogout();
   }
 };
 
@@ -87,6 +94,31 @@ const fetchLanguage = () => {
 };
 
 // fetchLanguage();
+
+const userStatus = localStorage.getItem("userStatus");
+
+/**
+ * @description 退出登录
+ */
+const userLogout = () => {
+  userLogoutApi().then((res: IResultOr) => {
+    const { message, success, result, code } = res;
+    if (code == "000005") {
+      proxy.$message.error(message);
+      router.push("/login");
+      return;
+    }
+
+    if (success) {
+      localStorage.setItem("userStatus", result.status);
+      router.push("/login");
+      localStorage.setItem("userStatus", "0");
+      proxy.$message.success(message);
+    } else {
+      proxy.$message.error(message);
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>
