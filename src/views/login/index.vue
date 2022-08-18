@@ -45,50 +45,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { IResultOr } from "../../api/interface";
-import { userSignApi, userLoginApi } from "../../api/login/index";
+import userFormProperties from "../../hooks/login/useFormProperities";
+import useFormOperates from "../../hooks/login/useFormOperates";
 
-interface IRuleForm {
-  mobile: string;
-  password: string;
-}
-
-const activeName = ref<string>("login");
 const { t } = useI18n();
 const router = useRouter();
-// @ts-ignore
-const { proxy } = getCurrentInstance();
-const formRef = ref();
-const loginText = ref<string>("Log in Airbnb");
-const loginModel: IRuleForm = reactive({
-  mobile: "",
-  password: "",
-});
 
-const rules = reactive({
-  mobile: [
-    {
-      required: true,
-      min: 11,
-      max: 11,
-      message: t("login.placeMobile"),
-      trigger: "blur",
-    },
-  ],
-
-  password: [
-    {
-      required: true,
-      min: 6,
-      max: 12,
-      message: t("login.placePass"),
-      trigger: "blur",
-    },
-  ],
-});
+const { loginText, loginModel, activeName, formRef, rules } =
+  userFormProperties(t);
+const [userLogin, userSign] = useFormOperates(router, loginModel);
 
 /**
  * @description 切换tab
@@ -115,35 +82,6 @@ const submitForm = () => {
       }
     } else {
       return false;
-    }
-  });
-};
-
-/**
- * @description 注册
- */
-const userSign = (params: IRuleForm) => {
-  userSignApi(params).then((res: IResultOr) => {
-    console.log(res);
-    const { success, message } = res;
-    if (success) {
-      proxy.$message.success(message);
-    } else {
-      proxy.$message.error(message);
-    }
-  });
-};
-
-const userLogin = (params: IRuleForm) => {
-  userLoginApi(params).then((res: IResultOr) => {
-    const { message, success, result } = res;
-
-    if (success) {
-      localStorage.setItem("userStatus", result.status);
-      router.push("/home");
-      proxy.$message.success(message);
-    } else {
-      proxy.$message.error(message);
     }
   });
 };

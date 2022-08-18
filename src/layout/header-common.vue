@@ -110,7 +110,6 @@ const userLogout = () => {
     }
 
     if (success) {
-      localStorage.setItem("userStatus", result.status);
       router.push("/login");
       localStorage.setItem("userStatus", "0");
       proxy.$message.success(message);
